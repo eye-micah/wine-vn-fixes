@@ -49,7 +49,7 @@ detect_distro() {
         source /etc/os-release
         case "$ID" in
             debian) echo "debian" ;;
-            ubuntu | pop | mint) echo "ubuntu" ;;
+            ubuntu | pop | linuxmint) echo "ubuntu" ;;
             arch | manjaro | endeavouros) echo "arch" ;;
             *) echo "unsupported" ;;
         esac
@@ -62,7 +62,7 @@ detect_distro() {
 install_wine() {
     local distro="$1"
     local codename
-    codename=$(lsb_release -c 2>/dev/null | awk '{print $2}')
+    codename=$(grep "^DISTRIB_CODENAME=" /etc/upstream-release/lsb-release | cut -d'=' -f2)
     case "$distro" in
         debian | ubuntu)
             sudo dpkg --add-architecture i386
