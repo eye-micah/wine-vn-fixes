@@ -65,10 +65,10 @@ install_wine() {
     codename=$(grep "^DISTRIB_CODENAME=" /etc/upstream-release/lsb-release | cut -d'=' -f2)
     case "$distro" in
         debian | ubuntu)
-            sudo dpkg --add-architecture i386
-            sudo apt update
 	    sudo mkdir -pm755 /etc/apt/keyrings
 	    wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key -
+            sudo dpkg --add-architecture i386
+            sudo apt update
             sudo wget -NP /etc/apt/sources.list.d/ "https://dl.winehq.org/wine-builds/ubuntu/dists/${codename}/winehq-${codename}.sources"
             sudo apt update
             sudo apt install -y winehq-stable
