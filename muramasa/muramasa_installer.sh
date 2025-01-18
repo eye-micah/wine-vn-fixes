@@ -82,7 +82,12 @@ install_wine() {
             fi
             sudo dpkg --add-architecture i386
             sudo apt update
-            sudo wget -NP /etc/apt/sources.list.d/ "https://dl.winehq.org/wine-builds/ubuntu/dists/${codename}/winehq-${codename}.sources"
+	    if [[ ! -f /etc/apt/sources.list.d/winehq-${codename}.sources ]]; then
+	        echo "Importing WineHQ repo..."
+                sudo wget -NP /etc/apt/sources.list.d/ "https://dl.winehq.org/wine-builds/ubuntu/dists/${codename}/winehq-${codename}.sources"
+	    else
+	        echo "WineHQ repo already exists. Skipping import."
+	    fi
             sudo apt update
 	    # Check if winehq-stable is available in the repositories
 	    if is_dpkg_available "winehq-stable"; then
