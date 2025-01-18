@@ -66,7 +66,15 @@ install_wine() {
     case "$distro" in
         debian | ubuntu)
 	    sudo mkdir -pm755 /etc/apt/keyrings
-	    wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key -
+            sudo mkdir -pm755 /etc/apt/keyrings
+
+            # Check if the WineHQ keyring already exists
+            if [[ ! -f /etc/apt/keyrings/winehq-archive.key ]]; then
+                echo "Importing WineHQ keyring..."
+                wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key -
+            else
+                echo "WineHQ keyring already exists. Skipping import."
+            fi
             sudo dpkg --add-architecture i386
             sudo apt update
             sudo wget -NP /etc/apt/sources.list.d/ "https://dl.winehq.org/wine-builds/ubuntu/dists/${codename}/winehq-${codename}.sources"
