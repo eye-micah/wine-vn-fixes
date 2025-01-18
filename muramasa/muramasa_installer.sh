@@ -95,17 +95,10 @@ install_wine() {
 	        sudo apt update
 	        sudo apt install -y --install-recommends winehq-stable winetricks
 	    else
-	        echo "winehq-stable is not available in the repositories. Installing winehq-devel instead."
-
-	        # Check if winehq-devel is available
-	        if is_dpkg_available "winehq-devel"; then
-		    sudo apt update
-		    sudo apt install -y --install-recommends winehq-devel winetricks
-	        else
-		    echo "Neither winehq-stable nor winehq-devel are available in the repositories."
-		exit 1
-	        fi
+	        echo "winehq-stable is not available in the repositories. Installing wine from apt repo instead. You may remove the WineHQ repository manually or wait for the stable package to appear in your distro."
+		sudo apt install -y --install-recommends wine winetricks
 	    fi
+	    sudo apt install --install-recommends vulkan-icd:i386 libgl1:i386
             ;;
         arch)
             sudo pacman -Syu --needed --noconfirm wine wine-mono wine-gecko winetricks
