@@ -8,9 +8,8 @@ INSTALLER_EXE=""
 
 # Function to print usage
 usage() {
-    echo "Usage: $0 [--wineprefix WINEPREFIX] --installer-exe INSTALLER_EXE"
+    echo "Usage: $0 --installer-exe INSTALLER_EXE"
     echo
-    echo "  --wineprefix WINEPREFIX     Path to the Wine prefix (default: ~/.wine-muramasa)"
     echo "  --installer-exe INSTALLER_EXE  Path to the game installer executable (required)"
     exit 1
 }
@@ -18,10 +17,6 @@ usage() {
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --wineprefix)
-            WINEPREFIX="$2"
-            shift 2
-            ;;
         --installer-exe)
             INSTALLER_EXE="$2"
             shift 2
