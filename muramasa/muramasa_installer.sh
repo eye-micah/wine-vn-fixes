@@ -58,12 +58,14 @@ detect_distro() {
     fi
 }
 
+is_dpkg_available() {
+        apt-cache show "$1" > /dev/null 2>&1
+}
+
 # Install Wine based on distribution
 install_wine() {
     local distro="$1"
-    local is_package_available() {
-        apt-cache show "$1" > /dev/null 2>&1
-    }
+    
     local codename
     codename=$(grep "^DISTRIB_CODENAME=" /etc/upstream-release/lsb-release | cut -d'=' -f2)
     case "$distro" in
@@ -83,7 +85,7 @@ install_wine() {
             sudo wget -NP /etc/apt/sources.list.d/ "https://dl.winehq.org/wine-builds/ubuntu/dists/${codename}/winehq-${codename}.sources"
             sudo apt update
 	    # Check if winehq-stable is available in the repositories
-	    if is_package_available "winehq-stable"; then
+	    if is_dpkg_available "winehq-stable"; then
 	        echo "winehq-stable is available in the repositories. Installing it."
 	        sudo apt update
 	        sudo apt install -y --install-recommends winehq-stable
@@ -91,7 +93,7 @@ install_wine() {
 	        echo "winehq-stable is not available in the repositories. Installing winehq-devel instead."
 
 	        # Check if winehq-devel is available
-	        if is_package_available "winehq-devel"; then
+	        if is_dpkg_available "winehq-devel"; then
 		    sudo apt update
 		    sudo apt install -y --install-recommends winehq-devel
 	        else
