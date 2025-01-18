@@ -3,5 +3,5 @@ Simple Git repository to keep track of (and script) fixes for various visual nov
 Clone repository by running this simple curl | bash script (which you can easily inspect):
 
 ```
-curl https://raw.githubusercontent.com/eye-micah/wine-vn-fixes/refs/heads/muramasa/muramasa/install.sh | bash
+curl https://raw.githubusercontent.com/eye-micah/wine-vn-fixes/refs/heads/muramasa/install.sh | bash
 ```
