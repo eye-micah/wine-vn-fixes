@@ -157,12 +157,12 @@ mf_install() {
         exit 1
     fi
 
-    pushd ../mf-install > /dev/null
+    pushd ../mf-install
     chmod +x ./mf-install.sh
     WINEPREFIX="$WINEPREFIX" sh ./mf-install.sh
     popd > /dev/null
 
-    pushd ../mf-installcab > /dev/null
+    pushd ../mf-installcab
     local file="install-mf-64.sh"
     if grep -q "python2" "$file"; then
         sed -i 's/python2/python3/g' "$file"
@@ -173,7 +173,7 @@ mf_install() {
     chmod +x ./install-mf-64.sh
     WINEPREFIX="$WINEPREFIX" sh ./install-mf-64.sh
     ls "$WINEPREFIX/drive_c/Program Files/Full Metal Daemon Muramasa/"
-    popd > /dev/null
+    popd
 }
 
 main() {
