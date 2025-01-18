@@ -71,7 +71,23 @@ install_wine() {
             sudo apt update
             sudo wget -NP /etc/apt/sources.list.d/ "https://dl.winehq.org/wine-builds/ubuntu/dists/${codename}/winehq-${codename}.sources"
             sudo apt update
-            sudo apt install -y winehq-stable
+	    # Check if winehq-stable is available in the repositories
+	    if is_package_available "winehq-stable"; then
+	        echo "winehq-stable is available in the repositories. Installing it."
+	        sudo apt update
+	        sudo apt install -y --install-recommends winehq-stable
+	    else
+	        echo "winehq-stable is not available in the repositories. Installing winehq-devel instead."
+
+	        # Check if winehq-devel is available
+	        if is_package_available "winehq-devel"; then
+		    sudo apt update
+		    sudo apt install -y --install-recommends winehq-devel
+	        else
+		    echo "Neither winehq-stable nor winehq-devel are available in the repositories."
+		exit 1
+	        fi
+	    fi
             ;;
         arch)
             sudo pacman -Syu --needed --noconfirm wine wine-mono wine-gecko winetricks
