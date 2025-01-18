@@ -44,7 +44,7 @@ detect_distro() {
         source /etc/os-release
         case "$ID" in
             debian|ubuntu) echo "debian" ;;
-            arch|manjaro) echo "arch" ;;
+            arch|manjaro|endeavouros) echo "arch" ;;
             *) echo "unsupported" ;;
         esac
     else
