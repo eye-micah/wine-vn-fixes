@@ -96,7 +96,7 @@ install_wine() {
 	        sudo apt install -y --install-recommends winehq-stable winetricks
 	    else
 	        echo "winehq-stable is not available in the repositories. Installing wine from apt repo instead. You may remove the WineHQ repository manually or wait for the stable package to appear in your distro."
-		sudo apt install -y --install-recommends wine winetricks
+		sudo apt install -y --install-recommends wine wine32 wine64 winetricks
 	    fi
 	    sudo apt install --install-recommends vulkan-icd:i386 libgl1:i386
             ;;
