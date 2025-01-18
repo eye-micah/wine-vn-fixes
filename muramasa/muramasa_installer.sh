@@ -130,7 +130,9 @@ setup_wineprefix() {
 # Run the installer executable
 run_installer() {
     echo "Running the installer: $INSTALLER_EXE"
-    echo "Note: DO NOT RUN THE GAME YET! INSTALL TO THE DEFAULT LOCATION IT PROVIDES."
+    echo " "
+    echo "   !!! Note: DO NOT RUN THE GAME YET! INSTALL TO THE DEFAULT LOCATION IT PROVIDES !!! "
+    echo " "
     WINEPREFIX="$WINEPREFIX" wine "$INSTALLER_EXE"
 }
 
@@ -157,7 +159,7 @@ mf_install() {
         exit 1
     fi
 
-    pushd ../mf-install
+    cd ../mf-install
     chmod +x ./mf-install.sh
     WINEPREFIX="$WINEPREFIX" sh ./mf-install.sh
     popd > /dev/null
@@ -171,7 +173,7 @@ mf_install() {
         echo "No 'python2' found in $file. No changes made."
     fi
     chmod +x ./install-mf-64.sh
-    WINEPREFIX="$WINEPREFIX" sh ./install-mf-64.sh
+    WINEPREFIX="$WINEPREFIX" sh ./install-mf-64.sh &>/dev/null
     ls "$WINEPREFIX/drive_c/Program Files/Full Metal Daemon Muramasa/"
     popd
 }
