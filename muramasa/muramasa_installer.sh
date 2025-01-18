@@ -61,6 +61,9 @@ detect_distro() {
 # Install Wine based on distribution
 install_wine() {
     local distro="$1"
+    local is_package_available() {
+        apt-cache show "$1" > /dev/null 2>&1
+    }
     local codename
     codename=$(grep "^DISTRIB_CODENAME=" /etc/upstream-release/lsb-release | cut -d'=' -f2)
     case "$distro" in
