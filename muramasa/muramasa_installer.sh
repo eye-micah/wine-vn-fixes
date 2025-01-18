@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Default Wine prefix and installer executable
-WINEPREFIX="$HOME/.wine-muramasa"
+WINEPREFIX="${HOME}/.wine-muramasa"
 INSTALLER_EXE=""
 
 # Function to print usage
@@ -18,6 +18,10 @@ usage() {
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --installer-exe)
+            if [[ $# -lt 2 ]]; then
+                echo "Error: --installer-exe requires a value."
+                usage
+            fi
             INSTALLER_EXE="$2"
             shift 2
             ;;
@@ -29,7 +33,7 @@ done
 
 # Validate arguments
 if [[ -z "$INSTALLER_EXE" ]]; then
-    echo "Error: --installer-exe is required"
+    echo "Error: --installer-exe is required."
     usage
 fi
 
@@ -41,11 +45,12 @@ fi
 # Detect distribution
 detect_distro() {
     if [[ -f /etc/os-release ]]; then
+        # shellcheck source=/dev/null
         source /etc/os-release
         case "$ID" in
             debian) echo "debian" ;;
-	    ubuntu|pop|mint) echo "ubuntu" ;;
-            arch|manjaro|endeavouros) echo "arch" ;;
+            ubuntu | pop | mint) echo "ubuntu" ;;
+            arch | manjaro | endeavouros) echo "arch" ;;
             *) echo "unsupported" ;;
         esac
     else
@@ -56,15 +61,16 @@ detect_distro() {
 # Install Wine based on distribution
 install_wine() {
     local distro="$1"
-    local codename=$(lsb_release -c | awk '{print $2}')
+    local codename
+    codename=$(lsb_release -c 2>/dev/null | awk '{print $2}')
     case "$distro" in
-	debian|ubuntu)
-	    sudo dpkg --add-architecture i386
-	    sudo apt update
-	    sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/${codename}/winehq-${codename}.sources
-	    sudo apt update
-	    sudo apt install winehq-stable
-	    ;;
+        debian | ubuntu)
+            sudo dpkg --add-architecture i386
+            sudo apt update
+            sudo wget -NP /etc/apt/sources.list.d/ "https://dl.winehq.org/wine-builds/ubuntu/dists/${codename}/winehq-${codename}.sources"
+            sudo apt update
+            sudo apt install -y winehq-stable
+            ;;
         arch)
             sudo pacman -Syu --needed --noconfirm wine wine-mono wine-gecko winetricks
             ;;
@@ -78,7 +84,6 @@ install_wine() {
 # Configure Wine prefix
 setup_wineprefix() {
     echo "Setting up Wine prefix at $WINEPREFIX..."
-    export WINEPREFIX
     mkdir -p "$WINEPREFIX"
     WINEPREFIX="$WINEPREFIX" wineboot --init
 
@@ -90,7 +95,6 @@ setup_wineprefix() {
 run_installer() {
     echo "Running the installer: $INSTALLER_EXE"
     echo "Note: DO NOT RUN THE GAME YET! INSTALL TO THE DEFAULT LOCATION IT PROVIDES."
-    export WINEPREFIX
     WINEPREFIX="$WINEPREFIX" wine "$INSTALLER_EXE"
 }
 
@@ -117,28 +121,28 @@ mf_install() {
         exit 1
     fi
 
-    pushd ../mf-install
-    chmod +x ./mf-install.sh && WINEPREFIX="$WINEPREFIX" sh ./mf-install.sh
-    popd
+    pushd ../mf-install > /dev/null
+    chmod +x ./mf-install.sh
+    WINEPREFIX="$WINEPREFIX" sh ./mf-install.sh
+    popd > /dev/null
 
-    pushd ../mf-installcab
-    file="install-mf-64.sh"
-    # Check if the file contains 'python2' before making replacements
-    if grep -q "python2" "$file"; then 
-    # Replace 'python2' with 'python3' only if 'python2' is found 
-    sed -i 's/python2/python3/g' "$file"
-    echo "Replaced python2 with python3 in $file"
+    pushd ../mf-installcab > /dev/null
+    local file="install-mf-64.sh"
+    if grep -q "python2" "$file"; then
+        sed -i 's/python2/python3/g' "$file"
+        echo "Replaced python2 with python3 in $file"
     else
-    echo "No 'python2' found in $file. No changes made."
+        echo "No 'python2' found in $file. No changes made."
     fi
-    chmod +x ./install-mf-64.sh && WINEPREFIX="$WINEPREFIX" sh ./install-mf-64.sh
-    cp ./mfplat.dll "$WINEPREFIX/drive_c/Program Files/Full Metal Daemon Muramasa/"
+    chmod +x ./install-mf-64.sh
+    WINEPREFIX="$WINEPREFIX" sh ./install-mf-64.sh
     ls "$WINEPREFIX/drive_c/Program Files/Full Metal Daemon Muramasa/"
-    popd
+    popd > /dev/null
 }
 
 main() {
     echo "Detecting distribution..."
+    local distro
     distro=$(detect_distro)
     if [[ "$distro" == "unsupported" ]]; then
         echo "Error: Unsupported Linux distribution."
