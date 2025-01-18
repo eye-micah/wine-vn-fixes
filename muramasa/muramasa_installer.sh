@@ -118,6 +118,15 @@ mf_install() {
     popd
 
     pushd ../mf-installcab
+    file="install-mf-64.sh"
+    # Check if the file contains 'python2' before making replacements
+    if grep -q "python2" "$file"; then 
+    # Replace 'python2' with 'python3' only if 'python2' is found 
+    sed -i 's/python2/python3/g' "$file"
+    echo "Replaced python2 with python3 in $file"
+    else
+    echo "No 'python2' found in $file. No changes made."
+    fi
     chmod +x ./install-mf-64.sh && WINEPREFIX="$WINEPREFIX" sh ./install-mf-64.sh
     popd
 }
