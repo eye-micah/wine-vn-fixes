@@ -68,9 +68,9 @@ install_wine() {
     
     local codename
     if [[ ! -f /etc/upstream-release/lsb-release ]]; then
-        codename=$(grep "^DISTRIB_CODENAME=" /etc/upstream-release/lsb-release | cut -d'=' -f2)
-    else
 	codename=$(lsb_release -cs | awk '{print $2}')
+    else
+	codename=$(grep "^DISTRIB_CODENAME=" /etc/upstream-release/lsb-release | cut -d'=' -f2)
     fi
     case "$distro" in
         debian | ubuntu)
