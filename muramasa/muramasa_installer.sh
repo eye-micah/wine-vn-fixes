@@ -93,7 +93,7 @@ run_installer() {
 # Copy xaudio2_8.dll
 xaudio_dll() {
     echo "Copying over xaudio2_8.dll..."
-    local target_dir="$WINEPREFIX/drive_c/Program Files (x86)/Full Metal Daemon Muramasa"
+    local target_dir="$WINEPREFIX/drive_c/Program Files/Full Metal Daemon Muramasa"
     if [[ ! -f "./xaudio2_8.dll" ]]; then
         echo "Error: xaudio2_8.dll not found in the current directory."
         exit 1

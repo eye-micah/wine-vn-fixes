@@ -4,7 +4,7 @@ set -euo pipefail
 
 # Define Wine prefix and executable path
 WINEPREFIX="$HOME/.wine-muramasa"
-GAME_EXECUTABLE="$WINEPREFIX/drive_c/Program Files (x86)/Full Metal Daemon Muramasa/muramasa_en.exe"
+GAME_EXECUTABLE="$WINEPREFIX/drive_c/Program Files/Full Metal Daemon Muramasa/muramasa_en.exe"
 
 # Check if the game executable exists
 if [[ ! -f "$GAME_EXECUTABLE" ]]; then
