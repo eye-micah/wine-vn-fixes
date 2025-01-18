@@ -64,6 +64,7 @@ install_wine() {
 	    sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/${codename}/winehq-${codename}.sources
 	    sudo apt update
 	    sudo apt install winehq-stable
+	    ;;
         arch)
             sudo pacman -Syu --needed --noconfirm wine wine-mono wine-gecko winetricks
             ;;
