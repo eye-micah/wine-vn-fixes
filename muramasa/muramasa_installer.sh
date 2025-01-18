@@ -67,7 +67,11 @@ install_wine() {
     local distro="$1"
     
     local codename
-    codename=$(grep "^DISTRIB_CODENAME=" /etc/upstream-release/lsb-release | cut -d'=' -f2)
+    if [[ ! -f /etc/upstream-release/lsb-release ]]; then
+        codename=$(grep "^DISTRIB_CODENAME=" /etc/upstream-release/lsb-release | cut -d'=' -f2)
+    else
+	codename=$(lsb_release -cs | awk '{print $2}')
+    fi
     case "$distro" in
         debian | ubuntu)
 	    sudo mkdir -pm755 /etc/apt/keyrings
