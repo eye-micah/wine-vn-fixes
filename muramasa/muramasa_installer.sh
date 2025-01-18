@@ -88,14 +88,14 @@ install_wine() {
 	    if is_dpkg_available "winehq-stable"; then
 	        echo "winehq-stable is available in the repositories. Installing it."
 	        sudo apt update
-	        sudo apt install -y --install-recommends winehq-stable
+	        sudo apt install -y --install-recommends winehq-stable winetricks
 	    else
 	        echo "winehq-stable is not available in the repositories. Installing winehq-devel instead."
 
 	        # Check if winehq-devel is available
 	        if is_dpkg_available "winehq-devel"; then
 		    sudo apt update
-		    sudo apt install -y --install-recommends winehq-devel
+		    sudo apt install -y --install-recommends winehq-devel winetricks
 	        else
 		    echo "Neither winehq-stable nor winehq-devel are available in the repositories."
 		exit 1
