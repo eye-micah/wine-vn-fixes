@@ -43,7 +43,8 @@ detect_distro() {
     if [[ -f /etc/os-release ]]; then
         source /etc/os-release
         case "$ID" in
-            debian|ubuntu|pop) echo "debian" ;;
+            debian) echo "debian" ;;
+	    ubuntu|pop|mint) echo "ubuntu" ;;
             arch|manjaro|endeavouros) echo "arch" ;;
             *) echo "unsupported" ;;
         esac
@@ -55,12 +56,14 @@ detect_distro() {
 # Install Wine based on distribution
 install_wine() {
     local distro="$1"
+    local codename=$(lsb_release -c | awk '{print $2}')
     case "$distro" in
-        debian)
-            sudo dpkg --add-architecture i386
-            sudo apt update
-            sudo apt install -y wine wine32 wine64 winetricks
-            ;;
+	debian|ubuntu)
+	    sudo dpkg --add-architecture i386
+	    sudo apt update
+	    sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/${codename}/winehq-${codename}.sources
+	    sudo apt update
+	    sudo apt install winehq-stable
         arch)
             sudo pacman -Syu --needed --noconfirm wine wine-mono wine-gecko winetricks
             ;;
