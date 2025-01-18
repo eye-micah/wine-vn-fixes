@@ -1,0 +1,6 @@
+[submodule "mf-install"]
+	path = mf-install
+	url = https://github.com/Kurumi78/mf-install
+[submodule "mf-installcab"]
+	path = mf-installcab
+	url = https://github.com/Ultimator14/mf-installcab
