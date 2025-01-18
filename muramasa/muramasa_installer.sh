@@ -128,6 +128,8 @@ mf_install() {
     echo "No 'python2' found in $file. No changes made."
     fi
     chmod +x ./install-mf-64.sh && WINEPREFIX="$WINEPREFIX" sh ./install-mf-64.sh
+    cp ./mfplat.dll "$WINEPREFIX/drive_c/Program Files/Full Metal Daemon Muramasa/"
+    ls "$WINEPREFIX/drive_c/Program Files/Full Metal Daemon Muramasa/"
     popd
 }
 
