@@ -43,7 +43,7 @@ detect_distro() {
     if [[ -f /etc/os-release ]]; then
         source /etc/os-release
         case "$ID" in
-            debian|ubuntu) echo "debian" ;;
+            debian|ubuntu|pop-os) echo "debian" ;;
             arch|manjaro|endeavouros) echo "arch" ;;
             *) echo "unsupported" ;;
         esac
