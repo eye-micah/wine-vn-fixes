@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-REPO_URL="https://github.com/your-username/your-repo.git"
+REPO_URL="https://github.com/eye-micah/wine-vn-fixes.git"
 TARGET_DIR="./wine-vn-fixes"
 
 echo "Cloning repository: $REPO_URL"
